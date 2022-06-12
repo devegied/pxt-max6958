@@ -82,7 +82,9 @@ MAX6958.lightSegmentsAt(0x7F, 1)
 Light indicated segments at given position
  - segments - segments to light on (as a sum of segement values), eg: 127 for all 7 segments
  - pos - the position of digit, eg: 1
+
 segments value can be calculated by adding segment values:
+
 ![](segment_values.png)
 
 ```sig
@@ -90,6 +92,7 @@ MAX6958.showInteger(1234)
 ```
 Show a decimal integer number (between -999 and 9999 on four digits display)
  - num - a number to show, eg: 1234
+
 If value is to small (when negative) or to big display shows "-" in all places
 
 ```sig
@@ -97,6 +100,7 @@ MAX6958.showHex(0xABCD)
 ```
 Show a hexadecimal integer number (between -0x0FFF and 0xFFFF on four digits display)
  - num - a number to show, eg: 0xABCD
+
 If value is to small (when negative) or to big display shows "-" in all places
 
 

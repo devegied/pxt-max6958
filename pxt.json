@@ -1,6 +1,6 @@
 {
     "name": "MAX6958",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Makecode LED Digit Display (MAX6958) extension for micro:bit",
     "license": "MIT",
     "dependencies": {
