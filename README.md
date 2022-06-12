@@ -17,7 +17,7 @@ This repository can be added as an **extension** in MakeCode.
 * open [https://makecode.microbit.org/](https://makecode.microbit.org/)
 * click on **New Project**
 * click on **Extensions** under the gearwheel menu
-* search for **https://github.com/devegied/pxt-max6958** and import
+* search for **devegied/pxt-max6958** and import
 
 ## Edit this project ![Build status badge](https://github.com/devegied/pxt-max6958/workflows/MakeCode/badge.svg)
 
