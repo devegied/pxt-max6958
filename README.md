@@ -111,6 +111,12 @@ This image may take a few minutes to refresh.
 
 ![A rendered view of the blocks](https://github.com/devegied/pxt-max6958/raw/master/.github/makecode/blocks.png)
 
+## License  
+
+Licensed under the MIT License (MIT). See [LICENSE file](LICENSE) for more details.
+
+Copyright (c) 2022, devegied
+
 #### Metadata (used for search, rendering)
 
 * for PXT/microbit
