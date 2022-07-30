@@ -1,6 +1,6 @@
 let item = 0;
 let startFinished = 0;
-MAX6958.init(5, 4);
+MAX6958.init(5, 4, MAX6958.ADDRESS.AA38, MAX6958.MAXDIG0On.Left);
 for (let pos1 = 0; pos1 <= 7; pos1++) {
     MAX6958.showLED(pos1 + 1, true);
     basic.pause(500);

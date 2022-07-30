@@ -19,6 +19,12 @@ namespace MAX6958 {
         //% block="BA variant 0x39"
         BA39 = 0x39
     }
+    export enum MAXDIG0On {
+        //% block="Left"
+        Left = 0,
+        //% block="Right"
+        Right = 1
+    }
     //                0     1     2     3     4     5     6     7     8     9     A     b     C     d     E     F
     const _NUMS = [0x7E, 0x30, 0x6D, 0x79, 0x33, 0x5B, 0x5F, 0x70, 0x7F, 0x7B, 0x77, 0x1F, 0x4E, 0x3D, 0x4F, 0x47];
     let not_initialized: boolean = true;
@@ -26,6 +32,7 @@ namespace MAX6958 {
     let digCount: uint8;
     let myBrightness: uint8;
     let segReg: uint8;
+    let digOrderMod: boolean;
 
     function writeRegister(register: Regs, value: number): void {
         let buf = pins.createBuffer(2);
@@ -86,7 +93,7 @@ namespace MAX6958 {
     //% weight=96 blockGap=8
     //% pos.min=1 pos.max=4 pos.dflt=1
     export function showDP(pos: number = 1, show: boolean = true): void {
-        showLED(pos + 4, show);//dot points are separate leds starting from 5th position
+        showLED((digOrderMod ? (9 - pos) : (pos + 4)), show);//dot points are separate leds starting from 5th position
     }
     /**
      * light indicated segments at given position.
@@ -98,7 +105,7 @@ namespace MAX6958 {
     //% segments.dflt=0x7F pos.min=1 pos.max=4 pos.dflt=1
     export function lightSegmentsAt(segments: number = 0x7F, pos: number = 1): void {
         if (not_initialized) default_init();
-        writeRegister(Regs.DigitBase + pos - 1, segments & 0x7F); //position in MAX6958 indexed from 0; only 7 bits needed
+        writeRegister(Regs.DigitBase + (digOrderMod ? (4 - pos) : (pos - 1)), segments & 0x7F); //position in MAX6958 indexed from 0; only 7 bits needed
     }
     /**
      * show a digit at given position. 
@@ -110,7 +117,7 @@ namespace MAX6958 {
     //% num.min=0 num.max=15 num.dflt=5 pos.min=1 pos.max=4 pos.dflt=1
     export function showDigitAt(num: number = 5, pos: number = 1): void {
         if (not_initialized) default_init();
-        writeRegister(Regs.DigitBase + pos - 1, _NUMS[num % 16]);//position in MAX6958 indexed from 0
+        writeRegister(Regs.DigitBase + (digOrderMod?(4-pos):(pos-1)), _NUMS[num % 16]);//position in MAX6958 indexed from 0
     }
 
     function showIntBase(num: number, base: number): void {
@@ -155,11 +162,12 @@ namespace MAX6958 {
         showIntBase(num, 16);
     }
 
-    function internal_init(intensity: number, count: number, address: number): void {
+    function internal_init(intensity: number, count: number, address: number, maxDig0On: number): void {
         not_initialized = false;
         myBrightness = intensity;
         myAddress = address;
         digCount = count;
+        digOrderMod = (maxDig0On == MAXDIG0On.Right);
         let buf = pins.createBuffer(5);
         buf[0] = Regs.DecodeMode;
         buf[1] = 0; // disable decode mode for all digits
@@ -171,7 +179,7 @@ namespace MAX6958 {
     }
 
     function default_init(): void {
-        internal_init(5/*intensity*/, 4/*count*/, ADDRESS.AA38);
+        internal_init(5/*intensity*/, 4/*count*/, ADDRESS.AA38, MAXDIG0On.Left);
     }
     /**
      * initialize Digit Display Driver (MAX6958)
@@ -180,10 +188,10 @@ namespace MAX6958 {
      * @param address the i2c bus address of driver, eg: 0x38
      */
     //% weight=200 blockGap=8
-    //% blockId="MAX6958_init" block="init with brightness %intensity|digit count %count||i2c address %address"
+    //% blockId="MAX6958_init" block="init with brightness %intensity|digit count %count||i2c address %address|digit 0 position on the %maxDig0On"
     //% inlineInputMode=inline count.min=1 count.max=4 count.dflt=4 intensity.min=0 intensity.max=63 intensity.dflt=5
-    //% address.min=0x38 address.max=0x39 address.dflt=0x38
-    export function init(intensity: number = 5, count: number = 4, address: ADDRESS = 0x38): void {
-        internal_init(intensity, count, address);
+    //% address.min=0x38 address.max=0x39 address.dflt=0x38 maxDig0On.min=0 maxDig0On.max=1 maxDig0On.dflt=0 
+    export function init(intensity: number = 5, count: number = 4, address: ADDRESS = 0x38, maxDig0On: MAXDIG0On = MAXDIG0On.Left): void {
+        internal_init(intensity, count, address, maxDig0On);
     }
 }

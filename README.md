@@ -33,12 +33,13 @@ To edit this repository in MakeCode.
 MAX6958=github:devegied/pxt-max6958
 ```
 ```sig
-MAX6958.init(5, 4, MAX6958.ADDRESS.AA38)
+MAX6958.init(5, 4, MAX6958.ADDRESS.AA38, MAX6958.MAXDIG0On.Left)
 ```
-Optionaly initialize the display controller by defining intensity, digit count and i2c address
+Optionaly initialize the display controller by defining intensity, digit count, i2c address and position of Digit 0
   - intensity - the brightness of the LED, eg: 5
   - count - the count of digits, eg: 4
   - address - the i2c bus address of driver, eg: 0x38
+  - maxDig0On - the position of MAX6958 Digit 0, eg: 0 (on the left)
 
 ```sig
 MAX6958.on()
